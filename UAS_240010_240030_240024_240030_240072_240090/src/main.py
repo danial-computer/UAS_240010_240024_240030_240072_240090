@@ -12,6 +12,10 @@ import argparse
 import os
 import sys
 
+# Reconfigure stdout to use UTF-8 to prevent UnicodeEncodeError on Windows terminal
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')
+
 # Pastikan folder src/ ada di path agar import antar modul berjalan
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,10 +24,7 @@ from greedy_algorithm import greedy_tsp
 from dp_algorithm import dp_tsp
 from cost_calculator import calculate_fuel_consumption, calculate_tco
 
-
-# ─────────────────────────────────────────────
-#  Konstanta harga per skenario
-# ─────────────────────────────────────────────
+# Konstanta harga per skenario
 FUEL_PRICES = {
     "subsidy": 5_000,   # Rp 5.000 / liter
     "crisis":  20_000,  # Rp 20.000 / liter
@@ -31,9 +32,7 @@ FUEL_PRICES = {
 SERVER_RATE = 50  # Rp 50 / ms
 
 
-# ─────────────────────────────────────────────
-#  Utilitas pencetakan tabel CLI
-# ─────────────────────────────────────────────
+# Utilitas pencetakan tabel CLI
 def _separator(widths: list[int], char: str = "─", cross: str = "┼") -> str:
     """Buat baris pemisah tabel."""
     return "├" + cross.join(char * (w + 2) for w in widths) + "┤"
@@ -156,7 +155,7 @@ def print_comparison_table(
 
     print(_bottom_border(widths))
 
-    # Ringkasan
+    # Ringkasan TCO
     saving = d_tco["tco"] - g_tco["tco"]
     print()
     if saving > 0:
@@ -168,9 +167,7 @@ def print_comparison_table(
     print()
 
 
-# ─────────────────────────────────────────────
-#  Entry point
-# ─────────────────────────────────────────────
+# Entry point
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         prog="main.py",
@@ -220,7 +217,7 @@ def main() -> None:
 
     locations       = dataset["locations"]
     distance_matrix = dataset["distance_matrix"]
-    weights         = [loc["weight_kg"] for loc in locations]
+    weights         = dataset["package_weights"]
 
     n = len(locations)
     print(f"  🗺️   Jumlah lokasi    : {n} (1 Hub + {n - 1} Pelanggan)")
