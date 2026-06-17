@@ -121,20 +121,30 @@ def print_comparison_table(
         ("TCO Akhir",      rp(g_tco["tco"]),                 rp(d_tco["tco"])),
     ]
 
+    # Persingkat rute agar tabel tidak terlalu lebar:
+    # tampilkan hanya indeks node (misal: 0→2→1→3→0)
+    def short_route(route):
+        return "→".join(str(i) for i in route)
+
+    for idx, (m, g, d) in enumerate(rows_data):
+        if m == "Rute":
+            rows_data[idx] = (m, short_route(g_route), short_route(d_route))
+            break
+
     # Hitung lebar kolom secara dinamis
     col0_w = max(len(r[0]) for r in rows_data)
-    col1_w = max(len(r[1]) for r in rows_data + [("", "GREEDY (Heuristik)", "")])
-    col2_w = max(len(r[2]) for r in rows_data + [("", "", "DP / HELD-KARP (Optimal)")])
+    col1_w = max(len(r[1]) for r in rows_data + [("", "GREEDY", "")])
+    col2_w = max(len(r[2]) for r in rows_data + [("", "", "HELD-KARP")])
 
     col0_w = max(col0_w, len("Metrik"))
-    col1_w = max(col1_w, len("GREEDY (Heuristik)"))
-    col2_w = max(col2_w, len("DP / HELD-KARP (Optimal)"))
+    col1_w = max(col1_w, len("GREEDY"))
+    col2_w = max(col2_w, len("HELD-KARP"))
 
     widths = [col0_w, col1_w, col2_w]
 
-    # Header judul
+    # Header judul (satu baris, compact)
     total_width = sum(widths) + len(widths) * 3 + len(widths) - 1
-    title = f" TSP LOGISTIK — PERBANDINGAN HASIL ALGORITMA "
+    title = " TSP LOGISTIK — Greedy vs Held-Karp "
     print()
     print("╔" + "═" * total_width + "╗")
     print("║" + title.center(total_width) + "║")
@@ -143,7 +153,7 @@ def print_comparison_table(
 
     # Tabel
     print(_top_border(widths))
-    print(_row(["Metrik", "GREEDY (Heuristik)", "DP / HELD-KARP (Optimal)"], widths))
+    print(_row(["Metrik", "GREEDY", "HELD-KARP"], widths))
     print(_header_sep(widths))
 
     for i, (metric, gval, dval) in enumerate(rows_data):
@@ -212,7 +222,7 @@ def main() -> None:
     args = parse_args()
 
     # 1. Muat dataset
-    print(f"\n  📂  Membaca dataset: {args.data}")
+    print(f"\n  📂  Membaca dataset : {args.data}")
     dataset = load_dataset(args.data)
 
     locations       = dataset["locations"]
@@ -220,19 +230,18 @@ def main() -> None:
     weights         = dataset["package_weights"]
 
     n = len(locations)
-    print(f"  🗺️   Jumlah lokasi    : {n} (1 Hub + {n - 1} Pelanggan)")
-    print(f"  ⚙️   Skenario         : {args.scenario.upper()}")
-    print(f"  💰  Harga BBM        : Rp {FUEL_PRICES[args.scenario]:,}/liter")
+    print(f"  🗺️   Jumlah lokasi  : {n} (1 Hub + {n - 1} Pelanggan)")
+    print(f"  ⚙️   Skenario       : {args.scenario.upper()} — Rp {FUEL_PRICES[args.scenario]:,}/L")
 
     # 2. Jalankan algoritma Greedy
-    print("\n  🔄  Menjalankan Greedy (Nearest Neighbor)...")
+    print(f"\n  🔄  Greedy (Nearest Neighbor) ...", end="  ", flush=True)
     greedy_result = greedy_tsp(distance_matrix, start_node=0)
-    print(f"       Selesai dalam {greedy_result[2]:.4f} ms")
+    print(f"{greedy_result[2]:.4f} ms")
 
     # 3. Jalankan algoritma DP (Held-Karp)
-    print("  🔄  Menjalankan DP / Held-Karp...")
+    print(f"  🔄  DP / Held-Karp ...", end="  ", flush=True)
     dp_result = dp_tsp(distance_matrix, start_node=0)
-    print(f"       Selesai dalam {dp_result[2]:.4f} ms")
+    print(f"{dp_result[2]:.4f} ms")
 
     # 4. Cetak tabel perbandingan
     print_comparison_table(

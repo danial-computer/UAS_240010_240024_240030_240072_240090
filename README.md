@@ -3,10 +3,10 @@
 
 ### Anggota Kelompok:
 1. **Jovianie Felisia Suryadi** (140810240010) — *Cost & Financial Modeler*
-2. **Inaya Azeen Nadira** (140810240024) — *Heuristic Developer (Greedy)*
+2. **Inaya Azeen Nadira** (140810240024) — *Exact Developer (Dynamic Programming)*
 3. **Tubagus Achmad Danial Ma'arief** (140810240030) — *Data Modeler & Input Model*
 4. **Farel Tirtawijaya** (140810240072) — *Lead Integration & CLI Runner*
-5. **Newten Putra Santoso** (140810240090) — *Exact Developer (Dynamic Programming)*
+5. **Newten Putra Santoso** (140810240090) — *Heuristic Developer (Greedy)*
 
 ---
 
