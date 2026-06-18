@@ -14,31 +14,18 @@
 
 Program ini dikembangkan menggunakan **Python 3.8+** tanpa memerlukan instalasi pustaka pihak ketiga (*no third-party dependencies*).
 
-### Struktur Perintah CLI
-Jalankan program dari direktori utama dengan sintaks berikut:
-```bash
-python src/main.py --scenario [subsidy|crisis] [--data PATH]
-```
+### Perintah Eksekusi CLI
+Jalankan program dari direktori utama dengan memilih salah satu skenario ekonomi berikut:
 
-### Opsi Argumen:
-*   `--scenario`: **(Wajib)** Memilih skenario ekonomi.
-    *   `subsidy` : Simulasi dengan tarif BBM subsidi (**Rp 5.000 / liter**).
-    *   `crisis`  : Simulasi dengan tarif BBM krisis (**Rp 20.000 / liter**).
-*   `--data`: *(Opsional)* Path ke file JSON dataset. Jika dikosongkan, program secara default membaca file [data/dataset.json](/data/dataset.json).
-
-### Contoh Perintah Jalani Uji Coba:
-1.  **Menjalankan Skenario Subsidi (Bawaan):**
+1.  **Menjalankan Skenario Subsidi BBM (Harga BBM Rp 5.000 / Liter):**
     ```bash
     python src/main.py --scenario subsidy
     ```
-2.  **Menjalankan Skenario Krisis BBM:**
+2.  **Menjalankan Skenario Krisis BBM (Harga BBM Rp 20.000 / Liter):**
     ```bash
     python src/main.py --scenario crisis
     ```
-3.  **Menjalankan dengan File Dataset Kustom:**
-    ```bash
-    python src/main.py --scenario crisis --data data/dataset.json
-    ```
+
 
 ---
 
@@ -98,8 +85,8 @@ Kami membandingkan dua pendekatan algoritmik yang bertolak belakang untuk mengan
 ## 5. Ringkasan Hasil Uji & TCO (Tanggung Jawab: Jovianie - 240010)
 
 Hasil pengujian eksekusi terminal CLI untuk kedua skenario tersimpan secara detail di folder docs:
-*   [Output Skenario Subsidi](/docs/subsidy_terminal_output.txt)
-*   [Output Skenario Krisis](/docs/crisis_terminal_output.txt)
+*   [Screenshot Output Skenario Subsidi](docs/scenario%20subsidy.png)
+*   [Screenshot Output Skenario Krisis](docs/scenario%20crisis.png)
 
 ### Tabel Komparasi Utama ($N = 13$):
 
